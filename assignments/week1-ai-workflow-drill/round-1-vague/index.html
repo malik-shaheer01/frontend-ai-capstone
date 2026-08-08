@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Settings</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; }
+  input { display: block; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Settings</h1>
+
+<form id="settingsForm">
+  Name: <input type="text" id="name">
+  Email: <input type="text" id="email">
+  <input type="checkbox" id="notifications"> Email me about updates
+  <button>Save</button>
+</form>
+
+<script>
+document.getElementById('settingsForm').addEventListener('submit', function() {
+  var name = document.getElementById('name').value;
+  var email = document.getElementById('email').value;
+  var notifications = document.getElementById('notifications').checked;
+  console.log('Saved', name, email, notifications);
+  alert('Saved!');
+});
+</script>
+
+</body>
+</html>
