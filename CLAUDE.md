@@ -4,20 +4,23 @@ Stack and conventions for the **frontend-ai-capstone** repo (FlyRank AI Internsh
 
 ## Stack
 
-- **Build tool:** Vite
-- **Styling:** Tailwind CSS
-- **Language:** HTML/CSS/JS (TypeScript optional, per assignment)
-- **Package manager:** npm
+- **Small assignment drills (e.g. FE-02):** plain HTML/CSS/JS or Vite + Tailwind, npm, no framework overhead needed.
+- **Capstone:** **Shopify** (decided 2026-08-08). Not Next.js/Vercel — Shopify has its own tooling and deployment model:
+  - **Theme base:** Dawn (Shopify's official reference theme), customized
+  - **Templating:** Liquid + JSON templates (Online Store 2.0 sections)
+  - **Styling:** Tailwind CSS compiled via Tailwind CLI into a theme asset (Shopify themes have no native npm bundler)
+  - **Tooling:** Shopify CLI (`shopify theme dev` for live local preview against a dev store, `shopify theme push` to publish)
+  - **Hosting/account:** a free Shopify Partners development store — no paid plan needed for a portfolio build
+  - **Location in repo:** `capstone/` (Shopify's required folder structure — `assets/`, `config/`, `layout/`, `locales/`, `sections/`, `snippets/`, `templates/` — doesn't belong at repo root next to README/LICENSE/etc.)
 - **Formatting:** Prettier
-- **Deployment (capstone):** Vercel or GitHub Pages — capstone must ship as a public link
+- **Package manager:** npm
 
 ## Conventions
 
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `feat:`, `fix:`, `docs:`, `chore:`, `style:`, `refactor:`, `test:`
 - **Assignment layout:** one folder per assignment under `assignments/<week>-<slug>/`, created as each assignment starts
 - **Progress tracking:** [PROGRESS.md](./PROGRESS.md) — every assignment marked Done / Submitted / Pending, with the 5 counting toward the certificate flagged explicitly
-- **Capstone:** lives at repo root (or `capstone/` once the build starts) and must stay a deployable, responsive, Tailwind-built site
-- **No secrets committed** — use `.env`, which is gitignored
+- **No secrets committed** — use `.env`, which is gitignored; Shopify CLI's own auth token is never committed (it lives outside the repo, managed by `shopify login`)
 
 ## Environment
 
