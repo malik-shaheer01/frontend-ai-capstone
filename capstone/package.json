@@ -1,0 +1,12 @@
+{
+  "name": "capstone",
+  "private": true,
+  "description": "Front-end AI Engineering capstone — Shopify theme (Dawn base) for the FlyRank AI Internship.",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind-built.css --minify",
+    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind-built.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
