@@ -14,9 +14,10 @@ Certificate requirement: **5 completed assignments** (any 5 of 16 available) + *
 
 ## Capstone
 
-- **Type:** Responsive, Tailwind-built site (personal site, Shopify/Shopline build, or client-style site)
-- **Status:** Not started
-- **Public link:** TBD
+- **Chosen:** "Send the Link: Launch, Demo & Story" (Week 8, dual-track: General AI Fluency + Frontend AI Engineering)
+- **Status:** Done, not yet submitted — see [assignments/week8-send-the-link/README.md](./assignments/week8-send-the-link/README.md)
+- **Reminder set:** [GitHub issue #2](https://github.com/malik-shaheer01/frontend-ai-capstone/issues/2) to add the next case study once the Shopify build ships
+- **Separately, still not started:** the actual Shopify capstone build (Dawn theme + Tailwind + Shopify CLI, stack locked in [CLAUDE.md](./CLAUDE.md)) — this is the *next* case study, not this capstone card
 
 ## Other assignments (not currently counted)
 
