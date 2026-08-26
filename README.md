@@ -11,6 +11,15 @@ This repo tracks weekly build work culminating in a capstone: a responsive, Tail
 
 **Live capstone:** _not deployed yet — link will go here once the capstone ships_
 
+## Getting started
+
+Requires Node.js LTS and Git. Clone the repo, then check each `assignments/<week>-<slug>/` folder for its own run instructions:
+
+```bash
+git clone https://github.com/malik-shaheer01/frontend-ai-capstone.git
+cd frontend-ai-capstone
+```
+
 ## Status
 
 See [PROGRESS.md](./PROGRESS.md) for which assignments are done, submitted, or pending.
