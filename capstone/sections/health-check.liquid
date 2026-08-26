@@ -1,0 +1,34 @@
+<div class="max-w-2xl mx-auto px-6 py-16">
+  <h1 class="text-3xl font-bold text-ink mb-2">Health check</h1>
+  <p class="text-muted mb-8">Confirms the theme is deployed and pulling live store data — not static placeholder text.</p>
+
+  <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="border border-slate-200 rounded-lg p-4">
+      <dt class="text-sm text-muted">Store name</dt>
+      <dd class="text-lg font-semibold text-ink">{{ shop.name }}</dd>
+    </div>
+    <div class="border border-slate-200 rounded-lg p-4">
+      <dt class="text-sm text-muted">Store domain</dt>
+      <dd class="text-lg font-semibold text-ink">{{ shop.permanent_domain }}</dd>
+    </div>
+    <div class="border border-slate-200 rounded-lg p-4">
+      <dt class="text-sm text-muted">Products in catalog</dt>
+      <dd class="text-lg font-semibold text-ink">{{ shop.products_count }}</dd>
+    </div>
+    <div class="border border-slate-200 rounded-lg p-4">
+      <dt class="text-sm text-muted">Rendered at</dt>
+      <dd class="text-lg font-semibold text-ink">{{ 'now' | date: '%Y-%m-%d %H:%M' }} UTC</dd>
+    </div>
+  </dl>
+
+  <p class="mt-8 text-sm text-muted">
+    Rendered server-side via Shopify Liquid objects — no external fetch or API key required.
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Health check",
+  "settings": []
+}
+{% endschema %}
