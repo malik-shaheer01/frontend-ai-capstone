@@ -14,10 +14,14 @@ Certificate requirement: **5 completed assignments** (any 5 of 16 available) + *
 
 ## Capstone
 
-- **Chosen:** "Send the Link: Launch, Demo & Story" (Week 8, dual-track: General AI Fluency + Frontend AI Engineering)
-- **Status:** Done, not yet submitted — see [assignments/week8-send-the-link/README.md](./assignments/week8-send-the-link/README.md)
-- **Reminder set:** [GitHub issue #2](https://github.com/malik-shaheer01/frontend-ai-capstone/issues/2) to add the next case study once the Shopify build ships
-- **Separately, still not started:** the actual Shopify capstone build (Dawn theme + Tailwind + Shopify CLI, stack locked in [CLAUDE.md](./CLAUDE.md)) — this is the *next* case study, not this capstone card
+- **Chosen:** "Send the Link: Launch, Demo & Story" (Week 10, dual-track: General AI Fluency + Frontend AI Engineering)
+- **Status:** NOT done — only 1 of 7 pass/revise criteria met so far
+- **Real scope (4 parts):**
+  1. Portfolio launched on a **custom domain** with real work — **not started** (Shopify build itself hasn't started, see below)
+  2. Public build-in-public story, one real win + one real limitation — **not started**, needs real shipped work to write about
+  3. 3–5 min demo video (portfolio walk, feature demo, one AI-heavy-lifting moment) + build write-up + plan to keep building — plan-to-keep-building part done ([assignments/week8-send-the-link/README.md](./assignments/week8-send-the-link/README.md), reminder: [issue #2](https://github.com/malik-shaheer01/frontend-ai-capstone/issues/2)); demo video and write-up not started
+  4. FlyRank graduate badge in footer + site submitted to their showcase — **not started**, needs a live badge system I don't have access to
+- **Blocker:** all of this depends on the Shopify capstone build (Dawn theme + Tailwind + Shopify CLI, stack locked in [CLAUDE.md](./CLAUDE.md)) actually existing and being deployed first — that hasn't started yet
 
 ## Other assignments (not currently counted)
 
