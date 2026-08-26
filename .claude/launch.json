@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fe04-playground",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "assignments/week4-accessible-components/playground", "run", "dev", "--", "--host"],
+      "port": 5173
+    }
+  ]
+}

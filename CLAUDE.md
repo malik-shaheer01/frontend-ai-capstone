@@ -4,7 +4,7 @@ Stack and conventions for the **frontend-ai-capstone** repo (FlyRank AI Internsh
 
 ## Stack
 
-- **Small assignment drills (e.g. FE-02):** plain HTML/CSS/JS or Vite + Tailwind, npm, no framework overhead needed.
+- **Small assignment drills (e.g. FE-02):** plain HTML/CSS/JS or Vite + Tailwind, npm, no framework overhead needed — unless the brief itself specifies a stack (e.g. FE-04 requires React + TypeScript for its component playground).
 - **Capstone:** **Shopify** (decided 2026-08-08). Not Next.js/Vercel — Shopify has its own tooling and deployment model:
   - **Theme base:** Dawn (Shopify's official reference theme), customized
   - **Templating:** Liquid + JSON templates (Online Store 2.0 sections)
