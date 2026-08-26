@@ -1,6 +1,6 @@
 # frontend-ai-capstone
 
-Front-end AI Engineering track repo for the FlyRank AI Internship, by Dua Shakeel.
+Front-end AI Engineering track repo for the FlyRank AI Internship, by Shaheer Nawaz.
 
 This repo tracks weekly build work culminating in a capstone: a responsive, Tailwind-built site, deployed and linked publicly below.
 
