@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Buttons with a Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* motion */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-hover: 150ms;
+    --dur-press: 80ms;
+    --dur-cross: 220ms;
+    --dur-pop: 200ms;
+    --dur-shake: 350ms;
+
+    /* type */
+    --font-display: "Sora", system-ui, "Segoe UI", sans-serif;
+    --font-body: "IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+    /* color — light (default) */
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --ink: #18171c;
+    --muted: #6e6b7a;
+    --border: #e6e3de;
+    --accent: #5b4fe8;
+    --accent-ink: #ffffff;
+    --accent-soft: #ece9fc;
+    --success: #1f9d55;
+    --error: #d63a3a;
+    --focus-ring: #5b4fe8;
+    --shadow-rest: 0 1px 2px rgba(24, 23, 28, 0.08);
+    --shadow-hover: 0 10px 24px -8px rgba(24, 23, 28, 0.28);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131218;
+      --surface: #1c1b23;
+      --ink: #f1eff7;
+      --muted: #9793a8;
+      --border: #302e3a;
+      --accent: #8b80ff;
+      --accent-ink: #17162a;
+      --accent-soft: #26234a;
+      --success: #3fbf74;
+      --error: #ef5c5c;
+      --focus-ring: #8b80ff;
+      --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 10px 28px -6px rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #131218;
+    --surface: #1c1b23;
+    --ink: #f1eff7;
+    --muted: #9793a8;
+    --border: #302e3a;
+    --accent: #8b80ff;
+    --accent-ink: #17162a;
+    --accent-soft: #26234a;
+    --success: #3fbf74;
+    --error: #ef5c5c;
+    --focus-ring: #8b80ff;
+    --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0 10px 28px -6px rgba(0, 0, 0, 0.55);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 56px 20px 80px;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    max-width: 660px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 48px;
+    max-width: 52ch;
+  }
+
+  section {
+    margin-bottom: 40px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 0 6px;
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    max-width: 56ch;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  /* state badge — live, literal, informational */
+  .state-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 8px;
+  }
+  .state-badge::before {
+    content: "state: ";
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  /* ---------- Motion button system ---------- */
+
+  .mbtn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    width: 180px;
+    border: none;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    transform: translateY(0) scale(1);
+    transition:
+      transform var(--dur-hover) var(--ease-out),
+      box-shadow var(--dur-hover) var(--ease-out),
+      background-color var(--dur-cross) var(--ease-standard);
+    box-shadow: var(--shadow-rest);
+  }
+
+  .mbtn--secondary { width: 160px; }
+
+  .mbtn:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .mbtn:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    transition-duration: var(--dur-press);
+    transition-timing-function: var(--ease-in);
+  }
+
+  .mbtn:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .mbtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
+  }
+
+  .mbtn[data-state="loading"] { cursor: progress; }
+  .mbtn[data-state="success"] { background: var(--success); }
+  .mbtn[data-state="error"] { background: var(--error); }
+
+  .mbtn[data-state="error"].shake {
+    animation: shake var(--dur-shake) var(--ease-standard);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+
+  /* Layered content — absolutely positioned, crossfaded, never resizes the button */
+  .mbtn__layer {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+    transition: opacity var(--dur-cross) var(--ease-standard),
+      transform var(--dur-cross) var(--ease-standard);
+    pointer-events: none;
+  }
+
+  .mbtn[data-state="idle"] .mbtn__layer--idle,
+  .mbtn[data-state="loading"] .mbtn__layer--loading,
+  .mbtn[data-state="success"] .mbtn__layer--success,
+  .mbtn[data-state="error"] .mbtn__layer--error {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .mbtn[data-state="success"] .mbtn__layer--success {
+    transition-duration: var(--dur-pop);
+    transition-timing-function: var(--ease-pop);
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .checkmark, .errormark { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ---------- Reduced motion: keep feedback, drop movement ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .mbtn,
+    .mbtn:hover:not(:disabled),
+    .mbtn:active:not(:disabled),
+    .mbtn__layer {
+      transition-duration: 60ms;
+      transform: none !important;
+      animation: none !important;
+    }
+    .spinner { animation-duration: 0.7s; } /* keep spin — it communicates progress, not decoration */
+  }
+
+  /* ---------- Demo page chrome ---------- */
+
+  .controls {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .control-btn {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 120ms var(--ease-standard), border-color 120ms var(--ease-standard);
+  }
+  .control-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .control-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+  label.toggle {
+    font-size: 12.5px;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  label.toggle input { accent-color: var(--accent); }
+
+  .note {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    display: grid;
+    gap: 12px;
+  }
+  .note p { margin: 0; }
+  .note strong { font-weight: 600; }
+  .note code {
+    font-family: var(--font-mono);
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">FE-06 · Front-end AI Engineering</p>
+  <h1>Buttons with a Brain</h1>
+  <p class="subtitle">
+    A button that narrates its own lifecycle — idle, hover, press, loading, success, error —
+    entirely through motion and color, with never an abrupt swap.
+  </p>
+
+  <section>
+    <h2>1. Send message</h2>
+    <p class="hint">
+      Full lifecycle: idle → hover/focus → active → loading → success/error → idle.
+      Random outcome is a 20% failure rate on a random 0.8–1.8s delay — or force one below.
+    </p>
+    <div class="row">
+      <button class="mbtn" id="send-btn" data-state="idle" type="button">
+        <span class="mbtn__layer mbtn__layer--idle">Send message</span>
+        <span class="mbtn__layer mbtn__layer--loading">
+          <span class="spinner" aria-hidden="true"></span>
+          Sending…
+        </span>
+        <span class="mbtn__layer mbtn__layer--success">
+          <svg class="checkmark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Sent
+        </span>
+        <span class="mbtn__layer mbtn__layer--error">
+          <svg class="errormark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 8v5M12 16h.01" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/>
+          </svg>
+          Retry
+        </span>
+      </button>
+      <span class="state-badge" id="send-state-badge">idle</span>
+      <label class="toggle">
+        <input type="checkbox" id="disable-toggle" />
+        Simulate disabled (e.g. empty input)
+      </label>
+    </div>
+    <div class="controls">
+      <button class="control-btn" id="force-success" type="button">Trigger success →</button>
+      <button class="control-btn" id="force-error" type="button">Trigger failure →</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Add to cart</h2>
+    <p class="hint">Second button, same motion system — proving the states are a language, not a one-off.</p>
+    <div class="row">
+      <button class="mbtn mbtn--secondary" id="cart-btn" data-state="idle" type="button">
+        <span class="mbtn__layer mbtn__layer--idle">Add to cart</span>
+        <span class="mbtn__layer mbtn__layer--loading">
+          <span class="spinner" aria-hidden="true"></span>
+          Adding…
+        </span>
+        <span class="mbtn__layer mbtn__layer--success">
+          <svg class="checkmark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Added
+        </span>
+        <span class="mbtn__layer mbtn__layer--error">
+          <svg class="errormark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 8v5M12 16h.01" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/>
+          </svg>
+          Retry
+        </span>
+      </button>
+      <span class="state-badge" id="cart-state-badge">idle</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Duration &amp; easing notes</h2>
+    <div class="note">
+      <p><strong>Hover/focus (150ms, ease-out):</strong> fast enough to feel like direct response to the
+      cursor, ease-out so the lift settles rather than overshooting.</p>
+      <p><strong>Press (80ms, ease-in):</strong> shorter than hover on purpose — a physical press reads as
+      instant, and ease-in gives it a quick "give" rather than a bounce.</p>
+      <p><strong>Idle ↔ loading crossfade (220ms, standard ease-in-out):</strong> long enough to read as
+      deliberate ("this has started/finished"), short enough not to feel laggy.</p>
+      <p><strong>Loading → success (200ms, back/pop ease):</strong> a small overshoot on the checkmark
+      reads as a tiny confirmation without being cartoonish, then holds 900ms before crossfading back to idle.</p>
+      <p><strong>Loading → error (350ms shake):</strong> a single shake communicates "no" viscerally and
+      finishes fast so the button never feels stuck; color and a retry label carry the rest of the message.</p>
+      <p><strong>Width is fixed, never animated</strong> — every state lives in an absolutely-positioned
+      layer crossfaded with <code>opacity</code>/<code>transform</code> only, so nothing here ever triggers
+      layout (no reflow-driven jank, compositor-only animations).</p>
+      <p><strong>Reduced motion:</strong> under <code>prefers-reduced-motion: reduce</code>, all
+      transform/animation is dropped except the spinner's spin (it <em>is</em> the feedback that work is
+      happening, not decoration) — crossfades still happen, just near-instant, so state changes stay visible.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  function wireMotionButton(btn, badge, { failureRate = 0.2, minDelay = 800, maxDelay = 1800 } = {}) {
+    let pendingTimeout = null;
+    let returnTimeout = null;
+
+    function clearTimers() {
+      if (pendingTimeout) clearTimeout(pendingTimeout);
+      if (returnTimeout) clearTimeout(returnTimeout);
+      pendingTimeout = null;
+      returnTimeout = null;
+    }
+
+    function setState(state) {
+      btn.dataset.state = state;
+      if (badge) badge.textContent = state;
+    }
+
+    function runCycle(forceOutcome) {
+      if (btn.disabled) return;
+      if (btn.dataset.state === "loading") return; // ignore spam-clicks mid-flight
+
+      clearTimers(); // interrupting a pending success/error hold is safe
+      btn.classList.remove("shake");
+      setState("loading");
+
+      const delay = minDelay + Math.random() * (maxDelay - minDelay);
+      pendingTimeout = setTimeout(() => {
+        const willFail =
+          typeof forceOutcome === "boolean" ? forceOutcome : Math.random() < failureRate;
+
+        if (willFail) {
+          setState("error");
+          // restart the shake animation even if triggered again quickly
+          void btn.offsetWidth;
+          btn.classList.add("shake");
+        } else {
+          setState("success");
+          returnTimeout = setTimeout(() => setState("idle"), 900);
+        }
+      }, delay);
+    }
+
+    btn.addEventListener("click", () => runCycle());
+    btn.addEventListener("animationend", () => btn.classList.remove("shake"));
+
+    return { runCycle, clearTimers };
+  }
+
+  const sendBtn = document.getElementById("send-btn");
+  const sendMotion = wireMotionButton(sendBtn, document.getElementById("send-state-badge"));
+
+  document.getElementById("force-success").addEventListener("click", () => sendMotion.runCycle(false));
+  document.getElementById("force-error").addEventListener("click", () => sendMotion.runCycle(true));
+
+  document.getElementById("disable-toggle").addEventListener("change", (e) => {
+    sendBtn.disabled = e.target.checked;
+    if (e.target.checked) {
+      sendMotion.clearTimers();
+      sendBtn.dataset.state = "idle";
+      document.getElementById("send-state-badge").textContent = "idle";
+    }
+  });
+
+  wireMotionButton(document.getElementById("cart-btn"), document.getElementById("cart-state-badge"));
+</script>
+</body>
+</html>
