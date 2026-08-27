@@ -1,0 +1,49 @@
+name: Capstone CI
+
+on:
+  push:
+    paths:
+      - "capstone/**"
+      - ".github/workflows/capstone.yml"
+  pull_request:
+    paths:
+      - "capstone/**"
+      - ".github/workflows/capstone.yml"
+
+defaults:
+  run:
+    working-directory: capstone
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: capstone/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit and component tests (Vitest)
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+        env:
+          # The route reads this at request time, not build time; a dummy value
+          # is fine here since no test ever exercises the real Groq call.
+          GROQ_API_KEY: ci-placeholder-not-a-real-key
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests (Playwright, API route mocked)
+        run: npm run e2e

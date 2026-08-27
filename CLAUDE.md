@@ -5,13 +5,13 @@ Stack and conventions for the **frontend-ai-capstone** repo (FlyRank AI Internsh
 ## Stack
 
 - **Small assignment drills (e.g. FE-02):** plain HTML/CSS/JS or Vite + Tailwind, npm, no framework overhead needed — unless the brief itself specifies a stack (e.g. FE-04 requires React + TypeScript for its component playground).
-- **Capstone:** **Shopify** (decided 2026-08-08). Not Next.js/Vercel — Shopify has its own tooling and deployment model:
-  - **Theme base:** Dawn (Shopify's official reference theme), customized
-  - **Templating:** Liquid + JSON templates (Online Store 2.0 sections)
-  - **Styling:** Tailwind CSS compiled via Tailwind CLI into a theme asset (Shopify themes have no native npm bundler)
-  - **Tooling:** Shopify CLI (`shopify theme dev` for live local preview against a dev store, `shopify theme push` to publish)
-  - **Hosting/account:** a free Shopify Partners development store — no paid plan needed for a portfolio build
-  - **Location in repo:** `capstone/` (Shopify's required folder structure — `assets/`, `config/`, `layout/`, `locales/`, `sections/`, `snippets/`, `templates/` — doesn't belong at repo root next to README/LICENSE/etc.)
+- **Capstone:** **"Ship It—Your First Production AI Product"** (decided 2026-08-27, superseding the earlier 2026-08-08 Shopify plan made before this capstone card was actually picked). Next.js (App Router) + TypeScript + Tailwind, deployed to Vercel's free tier:
+  - **AI provider:** Groq (OpenAI-compatible chat completions API), not Anthropic — Groq's free tier needs no card, avoiding the API billing wall hit on FE-01/FE-05
+  - **Project:** Commit Message Composer — paste a `git diff`, get back a Conventional-Commits-formatted message. Solves a real problem, uses AI for structured output rather than a chatbot
+  - **Testing:** Vitest + React Testing Library (component tests, AI route mocked) + Playwright (one e2e test), matching the FE-06B pattern already established in this repo
+  - **Hosting/account:** Vercel free tier (a `*.vercel.app` URL satisfies the brief's "live, deployed application" — no custom domain required, unlike the "Send the Link" capstone card)
+  - **Location in repo:** `capstone/`
+  - **Secret handling:** the Groq API key lives in `.env.local` (gitignored) locally and as a Vercel environment variable in production — never committed
 - **Formatting:** Prettier
 - **Package manager:** npm
 
