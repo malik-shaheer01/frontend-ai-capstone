@@ -1,7 +1,7 @@
 import type { ComposeResult } from "./types"
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-const MODEL = "llama-3.3-70b-versatile"
+const MODEL = "openai/gpt-oss-120b"
 
 const SYSTEM_PROMPT = `You write Conventional Commit messages from a git diff.
 Respond with ONLY a JSON object, no prose, matching exactly this shape:

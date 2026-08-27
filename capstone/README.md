@@ -66,6 +66,17 @@ npm run e2e    # Playwright — end-to-end + automated accessibility (axe) check
   call intercepted via Playwright's `page.route` (never depends on a real Groq key)
 - `e2e/a11y.spec.ts` — automated WCAG 2.1 A/AA scan via axe-core against the live page
 
+**Coverage** (`npm run test:coverage`): 61% statements overall, unevenly distributed — `DiffForm.tsx` is
+96.55% covered; `lib/groq.ts` was only 34.21% before `lib/groq.integration.test.ts` was added, because
+every other test mocks the network layer somewhere and never exercises the real HTTP call.
+
+`lib/groq.integration.test.ts` makes one real, unmocked call to Groq's live API (skipped automatically
+when `GROQ_API_KEY` isn't set, so it never blocks CI on a live credential). **This test caught a real
+bug the moment it first ran**: the model this app shipped with, `llama-3.3-70b-versatile`, no longer
+exists on Groq's current lineup — every mocked test passed while the actual feature was completely
+broken. Fixed by switching to `openai/gpt-oss-120b` (confirmed against Groq's live `/models` endpoint)
+and re-verified at both the library level and the full `/api/compose` route level with a real request.
+
 ## Performance & accessibility
 
 See [AUDIT.md](./AUDIT.md) for real Lighthouse and axe output.

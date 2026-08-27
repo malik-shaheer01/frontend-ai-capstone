@@ -24,7 +24,19 @@ first, not get discovered mid-build.
 
 **One thing that surprised me:**
 
-That an accessibility test could fail for a reason that had nothing to do with my HTML or ARIA
-attributes being wrong — Playwright's own strict-mode element matching flagged Next.js's built-in
-route-announcer `<div role="alert">` as a second match for a generic `getByRole("alert")` query. The
-fix wasn't in the app; it was in how precisely the test targeted the element it actually meant.
+That every test I'd written could pass — 10 Vitest tests, 3 Playwright tests, a clean build, a clean
+Lighthouse audit — while the core feature was completely broken. Every single one of those tests mocked
+the network call somewhere. The moment I finally added one real, unmocked test against the live Groq
+API (gated to skip automatically when no key is present, so it never touches CI), it failed instantly:
+the model I'd built against, `llama-3.3-70b-versatile`, no longer existed on Groq's current lineup.
+Mocked tests prove your code does what you told it the API would do; they can't prove the API still
+agrees with you. That's not a reason to mock less — the alternative is a slow, flaky suite that can't
+run in CI at all — but it's a reason to keep at least one real integration check that runs whenever a
+credential is actually available, which this project didn't have until I went looking for the gap
+myself. Fixed in a few minutes once found (switched to `openai/gpt-oss-120b`, confirmed against Groq's
+live model list), but it would have shipped silently broken without that one real call.
+
+Second surprise, smaller: an accessibility test can fail for a reason that has nothing to do with your
+HTML being wrong. Playwright's strict-mode matching flagged Next.js's own built-in route-announcer
+`<div role="alert">` as a second match for a generic `getByRole("alert")` query — the fix wasn't in the
+app, it was in how precisely the test targeted the element it actually meant.
