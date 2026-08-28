@@ -26,8 +26,9 @@ Certificate requirement: **5 completed assignments** (any 5 of 16 available) + *
   through Next's server functions, because no `netlify.toml` declared `@netlify/plugin-nextjs`. Fixed
   and pushed — see [capstone/DEPLOYMENT.md](./capstone/DEPLOYMENT.md#deploy-log-real-not-hypothetical)
   for the full log. Netlify auto-redeploys from the connected GitHub repo on every push to `main`.
-- **Status:** built and verified locally; deployment fix pushed, **awaiting confirmation the redeploy
-  actually resolved the 404** before the live URL can be recorded
+- **Live URL: https://flyrank-caps.netlify.app** — confirmed working end to end, including a real
+  production call to `/api/compose` against the live Groq API (not mocked, not localhost)
+- **Status: deployed and verified.** Every open item from the earlier punch list is now resolved.
 - **Checked against pass/revise criteria:**
   - App works end-to-end locally, AI integration is structured output (not a chatbot) — ✅
   - README explains setup/architecture/AI integration/limitations — ✅ [capstone/README.md](./capstone/README.md)
@@ -38,13 +39,14 @@ Certificate requirement: **5 completed assignments** (any 5 of 16 available) + *
     (`llama-3.3-70b-versatile`) no longer existed on Groq's lineup, so the entire AI feature was broken
     behind 10 passing mocked tests. Fixed (now `openai/gpt-oss-120b`) and re-verified at both the
     library and full API-route level with real requests — see [capstone/README.md](./capstone/README.md)
-  - Lighthouse ≥85, no WCAG AA violations — ⚠️ accessibility 100/100 (a real color-contrast bug was
-    found and fixed — see [capstone/AUDIT.md](./capstone/AUDIT.md)); performance scored 84 throttled
-    but 100 unthrottled, documented honestly — needs re-verification once actually deployed
-  - Deployment checklist filled out, rollback plan documented — ✅ [capstone/DEPLOYMENT.md](./capstone/DEPLOYMENT.md)
+  - Lighthouse ≥85, no WCAG AA violations — ✅ **live deployment scores 89/100/100/100** (performance/
+    accessibility/best-practices/SEO), clearing the ≥85 bar. A real color-contrast bug was found and
+    fixed along the way — see [capstone/AUDIT.md](./capstone/AUDIT.md) for the full local-vs-live story
+  - Deployment checklist filled out, rollback plan documented — ✅ [capstone/DEPLOYMENT.md](./capstone/DEPLOYMENT.md),
+    fully signed off with the real deploy log (including the 404 and its fix)
   - Reflection — ✅ [capstone/REFLECTION.md](./capstone/REFLECTION.md)
-- **What's left:** confirm the Netlify redeploy actually fixed the 404, record the live URL here, and
-  re-run Lighthouse against it (the throttled 84 was measured locally and needs re-verification live)
+- **Nothing left.** Every pass/revise criterion is met against the real live deployment, not just local
+  claims.
 
 ## Other assignments (not currently counted)
 

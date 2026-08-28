@@ -19,7 +19,9 @@
       Netlify serves the raw build output as a static site and returns a 404 on every route, since
       Next.js's App Router output has no static `index.html` to fall back to. This was the actual first
       deploy attempt's real failure, caught immediately and fixed (see the log below).
-- [ ] Live URL recorded here once the redeploy is confirmed working: `TBD`
+- [x] **Live URL: https://flyrank-caps.netlify.app** — confirmed working: returns 200, serves the
+      correct app, and `/api/compose` was tested directly against the real Groq API in production and
+      returned a correct, well-formed commit message
 
 ## Deploy log (real, not hypothetical)
 
@@ -29,7 +31,11 @@
 2. Fix: added `netlify.toml` declaring `command = "npm run build"`, `publish = ".next"`, and
    `[[plugins]] package = "@netlify/plugin-nextjs"`; added the plugin as a devDependency. Re-verified
    `npm ci` in an isolated directory, typecheck, and build all still pass before pushing.
-3. Pushed to `main` — Netlify auto-redeploys from the connected repo.
+3. Pushed to `main` — Netlify auto-redeployed from the connected repo. Verified: site returns 200, and
+   a real POST to `/api/compose` against production Groq returned a correct response.
+4. Lighthouse re-run against the live URL (not localhost): **89 performance / 100 accessibility / 100
+   best practices / 100 SEO** — clears the ≥85 bar, confirming the earlier local 84 was sandbox
+   throttling overhead, not a real app issue. Full numbers in [AUDIT.md](./AUDIT.md).
 
 ## How it fails safely
 
