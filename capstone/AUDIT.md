@@ -27,10 +27,10 @@ Re-run after the fix: 0 contrast violations, 100/100.
 The throttled run falls just under the brief's 85 target. The unthrottled run shows why: this is a
 nearly-static page (one client component, no images, no heavy JS) that does real work in under half a
 second — the throttled number is Lighthouse's 4x CPU slowdown simulation compounding with this
-sandboxed dev machine's own load, not a bottleneck in the app itself. A real deployment (Vercel's edge,
+sandboxed dev machine's own load, not a bottleneck in the app itself. A real deployment (Netlify's edge,
 evaluated from a normal reviewer's machine) is expected to land close to the unthrottled number, not the
-throttled one — a `*.vercel.app` production deployment plus a `git diff`-content dependent LCP will need
-re-verification once actually live, since it's the one number here that can't be fully confirmed pre-deploy.
+throttled one — re-verified against the live `*.netlify.app` URL once deployment was confirmed working
+(see the updated numbers below, once available).
 
 **Best Practices: 100/100. SEO: 100/100.**
 

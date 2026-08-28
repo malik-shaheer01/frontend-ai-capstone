@@ -5,13 +5,13 @@ Stack and conventions for the **frontend-ai-capstone** repo (FlyRank AI Internsh
 ## Stack
 
 - **Small assignment drills (e.g. FE-02):** plain HTML/CSS/JS or Vite + Tailwind, npm, no framework overhead needed — unless the brief itself specifies a stack (e.g. FE-04 requires React + TypeScript for its component playground).
-- **Capstone:** **"Ship It—Your First Production AI Product"** (decided 2026-08-27, superseding the earlier 2026-08-08 Shopify plan made before this capstone card was actually picked). Next.js (App Router) + TypeScript + Tailwind, deployed to Vercel's free tier:
+- **Capstone:** **"Ship It—Your First Production AI Product"** (decided 2026-08-27, superseding the earlier 2026-08-08 Shopify plan made before this capstone card was actually picked). Next.js (App Router) + TypeScript + Tailwind, deployed to Netlify's free tier (switched from an initial Vercel plan — user already had Netlify experience, and the brief allows either):
   - **AI provider:** Groq (OpenAI-compatible chat completions API), not Anthropic — Groq's free tier needs no card, avoiding the API billing wall hit on FE-01/FE-05
   - **Project:** Commit Message Composer — paste a `git diff`, get back a Conventional-Commits-formatted message. Solves a real problem, uses AI for structured output rather than a chatbot
   - **Testing:** Vitest + React Testing Library (component tests, AI route mocked) + Playwright (one e2e test), matching the FE-06B pattern already established in this repo
-  - **Hosting/account:** Vercel free tier (a `*.vercel.app` URL satisfies the brief's "live, deployed application" — no custom domain required, unlike the "Send the Link" capstone card)
+  - **Hosting/account:** Netlify free tier via `@netlify/plugin-nextjs` (declared in `capstone/netlify.toml`) — a `*.netlify.app` URL satisfies the brief's "live, deployed application," no custom domain required (unlike the "Send the Link" capstone card). Site is connected directly to this GitHub repo with base directory `capstone`, so every push to `main` auto-redeploys
   - **Location in repo:** `capstone/`
-  - **Secret handling:** the Groq API key lives in `.env.local` (gitignored) locally and as a Vercel environment variable in production — never committed
+  - **Secret handling:** the Groq API key lives in `.env.local` (gitignored) locally and as a Netlify environment variable in production — never committed
 - **Formatting:** Prettier
 - **Package manager:** npm
 
