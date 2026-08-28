@@ -66,9 +66,10 @@ npm run e2e    # Playwright — end-to-end + automated accessibility (axe) check
   call intercepted via Playwright's `page.route` (never depends on a real Groq key)
 - `e2e/a11y.spec.ts` — automated WCAG 2.1 A/AA scan via axe-core against the live page
 
-**Coverage** (`npm run test:coverage`): 61% statements overall, unevenly distributed — `DiffForm.tsx` is
-96.55% covered; `lib/groq.ts` was only 34.21% before `lib/groq.integration.test.ts` was added, because
-every other test mocks the network layer somewhere and never exercises the real HTTP call.
+**Coverage** (`npm run test:coverage`, with `GROQ_API_KEY` set locally): **85.07% statements, 100%
+functions**. Without a key present (e.g. in CI, where `lib/groq.integration.test.ts` skips itself),
+coverage of `lib/groq.ts` drops to ~34% — every other test mocks the network layer somewhere and never
+exercises the real HTTP call in `composeCommitMessage`.
 
 `lib/groq.integration.test.ts` makes one real, unmocked call to Groq's live API (skipped automatically
 when `GROQ_API_KEY` isn't set, so it never blocks CI on a live credential). **This test caught a real

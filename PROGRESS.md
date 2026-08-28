@@ -27,11 +27,12 @@ Certificate requirement: **5 completed assignments** (any 5 of 16 available) + *
   - App works end-to-end locally, AI integration is structured output (not a chatbot) — ✅
   - README explains setup/architecture/AI integration/limitations — ✅ [capstone/README.md](./capstone/README.md)
   - Tests exist and pass, coverage ≥50% — ✅ 11 Vitest (incl. 1 real, unmocked Groq integration test) +
-    3 Playwright, all green; 61% statement coverage via `npm run test:coverage`. The integration test
-    **caught a real production bug on first run**: the shipped model (`llama-3.3-70b-versatile`) no
-    longer existed on Groq's lineup, so the entire AI feature was broken behind 10 passing mocked tests.
-    Fixed (now `openai/gpt-oss-120b`) and re-verified at both the library and full API-route level with
-    real requests — see [capstone/README.md](./capstone/README.md)
+    3 Playwright, all green; **85.07% statement coverage / 100% function coverage** with a real key
+    present locally (drops to ~34% for `lib/groq.ts` alone without one, e.g. in CI, since that test
+    self-skips). The integration test **caught a real production bug on first run**: the shipped model
+    (`llama-3.3-70b-versatile`) no longer existed on Groq's lineup, so the entire AI feature was broken
+    behind 10 passing mocked tests. Fixed (now `openai/gpt-oss-120b`) and re-verified at both the
+    library and full API-route level with real requests — see [capstone/README.md](./capstone/README.md)
   - Lighthouse ≥85, no WCAG AA violations — ⚠️ accessibility 100/100 (a real color-contrast bug was
     found and fixed — see [capstone/AUDIT.md](./capstone/AUDIT.md)); performance scored 84 throttled
     but 100 unthrottled, documented honestly — needs re-verification once actually deployed
